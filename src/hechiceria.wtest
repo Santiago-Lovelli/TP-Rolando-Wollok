@@ -1,0 +1,56 @@
+import personaje.*
+import artefactos.*
+import hechizos.*
+import refuerzos.*
+
+describe "Punto 1: Hechicería" {
+
+	var basico = new Basico(nombre = "basico")
+	var espectroMalefico = new Logos(nombre = "espectro malefico", valorMultiplicativo = 1)
+	var rolando = new Personaje([], 1, espectroMalefico, [])
+
+	fixture {
+		rolando.hechizoPreferido(espectroMalefico)
+	}
+
+	test "Conocer el nivel de hechicería de Rolando" {
+		assert.equals(17, rolando.hechizoPreferido().poder())
+		assert.equals(5, mundo.fuerzaOscura())
+		assert.equals(56, rolando.nivelDeHechiceria())
+	}
+
+	test "Cambiar el nombre del espectro maléfico y conocer el nivel de hechicería" {
+		espectroMalefico.nombre("espectro superrecontramalefico muajajaja")
+		assert.equals(40, rolando.hechizoPreferido().poder())
+		assert.equals(5, mundo.fuerzaOscura())
+		assert.equals(125, rolando.nivelDeHechiceria())
+	}
+
+	test "Cambiar el hechizo preferido de Rolando a basico y conocer el nivel de hechicería" {
+		rolando.hechizoPreferido(basico)
+		assert.equals(10, rolando.hechizoPreferido().poder())
+		assert.equals(35, rolando.nivelDeHechiceria())
+	}
+
+	test "Hacer que ocurra un eclipse y conocer el nivel de hechicería de Rolando" {
+		mundo.eclipse()
+		assert.equals(17, rolando.hechizoPreferido().poder())
+		assert.equals(10, mundo.fuerzaOscura())
+		assert.equals(61, rolando.nivelDeHechiceria())
+	}
+
+	test "Saber si el espectro maléfico es poderoso" {
+		assert.that(espectroMalefico.esPoderoso())
+	}
+
+	test "Cambiar el nombre del espectro maléfico y saber si el espectro maléfico /*no*/ es poderoso" {
+		espectroMalefico.nombre("pepe")
+		assert.notThat(espectroMalefico.esPoderoso())
+	}
+
+	test "Saber si el hechizo basico /*no*/ es poderoso" {
+		assert.notThat(basico.esPoderoso())
+	}
+
+}
+

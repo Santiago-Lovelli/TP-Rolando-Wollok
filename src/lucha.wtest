@@ -1,0 +1,66 @@
+import personaje.*
+import artefactos.*
+import hechizos.*
+import refuerzos.*
+
+describe "Punto 2: Lucha" {
+
+	var collarDivino = new CollarDivino(5)
+	var espadaDelDestino = new Espada()
+	var mascaraOscura = new Mascara()
+	var espectroMalefico = new Logos(nombre = "espectro malefico", valorMultiplicativo = 1)
+	var rolando = new Personaje([], 1, espectroMalefico, [])
+
+	fixture {
+		rolando.agregarArtefacto(espadaDelDestino)
+		rolando.agregarArtefacto(collarDivino)
+		rolando.agregarArtefacto(mascaraOscura)
+	}
+
+	test "Eliminar todos los artefactos de Rolando y conocer la habilidad para la lucha de Rolando" {
+		rolando.artefactos().clear()
+		assert.equals(1, rolando.valorBaseDeLucha())
+		assert.equals(1, rolando.nivelDeLucha())
+	}
+
+	test "Conocer la habilidad para la lucha de Rolando" {
+		assert.equals(1, rolando.valorBaseDeLucha())
+		assert.equals(3, espadaDelDestino.unidadesDeLucha(rolando))
+		assert.equals(5, collarDivino.unidadesDeLucha(rolando))
+		assert.equals(4, mascaraOscura.unidadesDeLucha(rolando))
+		assert.equals(13, rolando.nivelDeLucha())
+	}
+
+	test "Cambiar la cantidad de perlas del collar divino a 3 y conocer la habilidad para la lucha de Rolando" {
+		collarDivino.cantidadPerlas(3)
+		assert.equals(1, rolando.valorBaseDeLucha())
+		assert.equals(3, espadaDelDestino.unidadesDeLucha(rolando))
+		assert.equals(3, collarDivino.unidadesDeLucha(rolando))
+		assert.equals(4, mascaraOscura.unidadesDeLucha(rolando))
+		assert.equals(11, rolando.nivelDeLucha())
+	}
+
+	test "Cambiar el valor base para la lucha de Rolando a 8 y conocer la habilidad para la lucha de Rolando" {
+		rolando.valorBaseDeLucha(8)
+		assert.equals(8, rolando.valorBaseDeLucha())
+		assert.equals(3, espadaDelDestino.unidadesDeLucha(rolando))
+		assert.equals(5, collarDivino.unidadesDeLucha(rolando))
+		assert.equals(4, mascaraOscura.unidadesDeLucha(rolando))
+		assert.equals(20, rolando.nivelDeLucha())
+	}
+
+	test "Hacer que ocurra un eclipse y preguntar por el valor de lucha de la máscara oscura" {
+		mundo.eclipse()
+		assert.equals(5, mascaraOscura.unidadesDeLucha(rolando))
+	}
+
+	test "Eliminar la máscara oscura de los artefactos de Rolando y conocer la habilidad para la lucha" {
+		rolando.quitarArtefacto(mascaraOscura)
+		assert.equals(1, rolando.valorBaseDeLucha())
+		assert.equals(3, espadaDelDestino.unidadesDeLucha(rolando))
+		assert.equals(5, collarDivino.unidadesDeLucha(rolando))
+		assert.equals(9, rolando.nivelDeLucha())
+	}
+
+}
+
